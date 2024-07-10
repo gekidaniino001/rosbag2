@@ -172,6 +172,10 @@ class RecordVerb(VerbExtension):
             choices=['debug', 'info', 'warn', 'error', 'fatal'],
             help='Logging level.')
         self._subparser = parser
+        parser.add_argument(
+            '--node-name', type=str, default='rosbag2_recorder',
+            help='Specify the recorder node name. Default is rosbag2_recorder.'
+        )
 
     def main(self, *, args):  # noqa: D102
         # both all and topics cannot be true
@@ -257,7 +261,7 @@ class RecordVerb(VerbExtension):
         recorder = Recorder(args.log_level)
 
         try:
-            recorder.record(storage_options, record_options)
+            recorder.record(storage_options, record_options, args.node_name)
         except KeyboardInterrupt:
             pass
 
